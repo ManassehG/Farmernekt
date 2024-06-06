@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'navigation-components/farmeducation.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -73,23 +74,6 @@ class FarmManagementPage extends StatelessWidget {
       body: Center(
         child: Text(
           'Crop and Livestock Tracking, Set Reminders',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-
-class EducationalContentPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Educational Content'),
-      ),
-      body: Center(
-        child: Text(
-          'Lessons and Tutorials on Farming Techniques',
           style: TextStyle(fontSize: 24),
         ),
       ),
