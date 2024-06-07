@@ -3,6 +3,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'navigation-components/farmeducation.dart';
 import 'navigation-components/marketplace.dart';
 import 'navigation-components/community-networking.dart';
+import 'navigation-components/farm-management.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -59,23 +60,6 @@ class UserAuthPage extends StatelessWidget {
       body: Center(
         child: Text(
           'User Registration, Login, Profile Setup',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-
-class FarmManagementPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Farm Management'),
-      ),
-      body: Center(
-        child: Text(
-          'Crop and Livestock Tracking, Set Reminders',
           style: TextStyle(fontSize: 24),
         ),
       ),
