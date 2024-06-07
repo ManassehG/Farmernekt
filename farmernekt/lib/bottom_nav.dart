@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'navigation-components/farmeducation.dart';
 import 'navigation-components/marketplace.dart';
+import 'navigation-components/community-networking.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -75,23 +76,6 @@ class FarmManagementPage extends StatelessWidget {
       body: Center(
         child: Text(
           'Crop and Livestock Tracking, Set Reminders',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
-
-class CommunityNetworkingPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Community and Networking'),
-      ),
-      body: Center(
-        child: Text(
-          'Farmer Profiles, Messaging System',
           style: TextStyle(fontSize: 24),
         ),
       ),
