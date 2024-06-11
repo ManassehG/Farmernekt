@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'bottom_nav.dart';
 import 'package:farmernekt/screens/login_screen.dart';
 

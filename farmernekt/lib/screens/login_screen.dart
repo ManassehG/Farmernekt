@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:farmernekt/bottom_nav.dart';
 import 'package:farmernekt/screens/forgot_password_screen.dart';
-import 'package:farmernekt/main.dart';
 import 'package:farmernekt/screens/signup_screen.dart';
 
 class LoginPage extends StatelessWidget {
