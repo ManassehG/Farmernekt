@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart'; // Add this import for Firebase initialization
 import 'bottom_nav.dart';
 import 'package:farmernekt/screens/login_screen.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure that plugin services are initialized
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); // Initialize Firebase
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,6 +26,8 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
       ),
+
+      debugShowCheckedModeBanner: false, // Remove debug banner
       home: AuthWrapper(),
     );
   }
@@ -33,11 +41,11 @@ class AuthWrapper extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasData) {
-          return BottomNav();
-        } else {
-          return LoginPage();
         }
+        if (snapshot.hasData) {
+          return BottomNav();
+        }
+        return LoginPage();
       },
     );
   }
