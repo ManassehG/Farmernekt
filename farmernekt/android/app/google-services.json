@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "16557475056",
+    "project_id": "farmernekt",
+    "storage_bucket": "farmernekt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16557475056:android:af3389b6076ad9c4f96e35",
+        "android_client_info": {
+          "package_name": "com.example.farmernekt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGIS_rywxlmGat_gSgrYJnvur02e7ZXo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

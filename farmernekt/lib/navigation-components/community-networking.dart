@@ -48,40 +48,199 @@ class _CommunityNetworkingPageState extends State<CommunityNetworkingPage> {
     });
   }
 
+  bool _isPostFormVisible = false;
+  bool _isDMVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Community Networking'),
+        title: Text('Farmers Community Network'),
+        backgroundColor: Colors.green[700],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Share your thoughts',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.green[700],
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
             ),
-            SizedBox(height: 16.0),
-            PostForm(addPost: addPost),
-            SizedBox(height: 16.0),
-            Text(
-              'Community Posts',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
-            SizedBox(height: 16.0),
-            Column(
-              children: posts.map((post) {
-                return PostTile(
-                  post: post,
-                  onLike: () => toggleLike(post),
-                  onComment: (comment) => addComment(post, comment),
-                );
-              }).toList(),
+            ListTile(
+              leading: Icon(Icons.article),
+              title: Text('Posts'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.message),
+              title: Text('Messages'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Profile'),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
           ],
         ),
+      ),
+      body: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isPostFormVisible = !_isPostFormVisible;
+                            });
+                          },
+                          child: Row(
+                            children: [
+                              Icon(
+                                _isPostFormVisible ? Icons.remove : Icons.add,
+                                color: Colors.green[900],
+                              ),
+                              SizedBox(width: 8.0),
+                              Text(
+                                'Share your thoughts',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green[900],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (_isPostFormVisible) ...[
+                          SizedBox(height: 16.0),
+                          PostForm(addPost: addPost),
+                        ],
+                        SizedBox(height: 16.0),
+                        Text(
+                          'Community Posts',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green[900],
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+                        Column(
+                          children: posts.map((post) {
+                            return PostTile(
+                              post: post,
+                              onLike: () => toggleLike(post),
+                              onComment: (comment) => addComment(post, comment),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: 1.0,
+            color: Colors.grey[300],
+          ),
+          Expanded(
+            flex: _isDMVisible ? 1 : 0,
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _isDMVisible = !_isDMVisible;
+                    });
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        _isDMVisible
+                            ? Icons.arrow_drop_down
+                            : Icons.arrow_drop_up,
+                        color: Colors.green[900],
+                      ),
+                      SizedBox(width: 8.0),
+                      Text(
+                        'Direct Messages',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green[900],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (_isDMVisible)
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.all(16.0),
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.green[700],
+                            child: Text('A'),
+                          ),
+                          title: Text('Alice'),
+                          subtitle: Text('How are the crops?'),
+                          onTap: () {
+                            // Implement message navigation
+                          },
+                        ),
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.green[700],
+                            child: Text('B'),
+                          ),
+                          title: Text('Bob'),
+                          subtitle: Text('Need help with irrigation.'),
+                          onTap: () {
+                            // Implement message navigation
+                          },
+                        ),
+                        // Add more ListTile for other messages
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -128,7 +287,13 @@ class _PostFormState extends State<PostForm> {
         children: [
           TextFormField(
             controller: _titleController,
-            decoration: InputDecoration(labelText: 'Title'),
+            decoration: InputDecoration(
+              labelText: 'Title',
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.green[700]!),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter a title';
@@ -136,9 +301,16 @@ class _PostFormState extends State<PostForm> {
               return null;
             },
           ),
+          SizedBox(height: 10.0),
           TextFormField(
             controller: _contentController,
-            decoration: InputDecoration(labelText: 'Content'),
+            decoration: InputDecoration(
+              labelText: 'Content',
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.green[700]!),
+              ),
+            ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter some content';
@@ -153,6 +325,9 @@ class _PostFormState extends State<PostForm> {
           SizedBox(height: 10.0),
           ElevatedButton(
             onPressed: _pickImage,
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green[700],
+            ),
             child: Text('Select Image'),
           ),
           SizedBox(height: 20.0),
@@ -172,6 +347,9 @@ class _PostFormState extends State<PostForm> {
                 });
               }
             },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.green[700],
+            ),
             child: Text('Add Post'),
           ),
         ],
@@ -215,8 +393,8 @@ class PostTile extends StatelessWidget {
             ),
             if (post.imagePath != null) ...[
               SizedBox(height: 8.0),
-              Image.asset(
-                post.imagePath!,
+              Image.file(
+                File(post.imagePath!),
                 height: 200,
                 fit: BoxFit.cover,
               ),
@@ -238,8 +416,12 @@ class PostTile extends StatelessWidget {
               controller: _commentController,
               decoration: InputDecoration(
                 labelText: 'Add a comment...',
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green[700]!),
+                ),
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
+                  icon: Icon(Icons.send, color: Colors.green[700]),
                   onPressed: () {
                     if (_commentController.text.isNotEmpty) {
                       onComment(_commentController.text);
