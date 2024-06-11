@@ -105,7 +105,7 @@ class LoginPage extends StatelessWidget {
                         );
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          MaterialPageRoute(builder: (context) => BottomNav()),
                         );
                       } catch (e) {
                         // Handle login error
