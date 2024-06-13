@@ -8,7 +8,7 @@ class ForgotPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.grey,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
@@ -20,34 +20,47 @@ class ForgotPasswordPage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade300, Colors.blue.shade900],
+            colors: [Colors.green.shade400, Colors.green.shade900],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.asset(
                   'assets/logo.png',
-                  height: 100,
+                  height: 120,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 30),
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    labelStyle: const TextStyle(color: Colors.white),
-                    floatingLabelStyle: const TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(color: Colors.green.shade900),
+                    floatingLabelStyle: TextStyle(color: Colors.green.shade900),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.green.shade900),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.green.shade900),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide:
+                          BorderSide(color: Colors.green.shade900, width: 2),
                     ),
                     filled: true,
-                    fillColor: Colors.white.withOpacity(0.8),
+                    fillColor: Colors.white.withOpacity(0.9),
                   ),
+                  style: TextStyle(color: Colors.green.shade900),
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
@@ -71,15 +84,15 @@ class ForgotPasswordPage extends StatelessWidget {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
+                    padding: const EdgeInsets.all(16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     backgroundColor: Colors.white,
-                    foregroundColor: Colors.blue.shade900,
+                    foregroundColor: Colors.green.shade900,
+                    textStyle: const TextStyle(fontSize: 18),
                   ),
-                  child: const Text('Reset Password',
-                      style: TextStyle(fontSize: 18)),
+                  child: const Text('Reset Password'),
                 ),
               ],
             ),
