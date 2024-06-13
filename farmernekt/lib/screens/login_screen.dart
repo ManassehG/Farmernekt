@@ -11,7 +11,11 @@ class LoginPage extends StatelessWidget {
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        clientId:
+            '16557475056-2nft30dv0qt4lgpvikt2e3dqlf409lc4.apps.googleusercontent.com',
+      );
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) {
         // The user canceled the sign-in
         return;
@@ -40,58 +44,85 @@ class LoginPage extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.blue.shade300, Colors.blue.shade900],
+            colors: [Colors.green.shade400, Colors.green.shade900],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Image.asset(
                     'assets/logo.png',
-                    height: 100,
+                    height: 120,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   Text(
-                    'Welcome back to Cakeify',
+                    'Welcome back to FarmerNekt',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   TextField(
                     controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      floatingLabelStyle: const TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.green.shade900),
+                      floatingLabelStyle:
+                          TextStyle(color: Colors.green.shade900),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.green.shade900),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.green.shade900),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            BorderSide(color: Colors.green.shade900, width: 2),
                       ),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.8),
+                      fillColor: Colors.white.withOpacity(0.9),
                     ),
+                    style: TextStyle(color: Colors.green.shade900),
                   ),
                   const SizedBox(height: 20),
                   TextField(
                     controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      floatingLabelStyle: const TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.green.shade900),
+                      floatingLabelStyle:
+                          TextStyle(color: Colors.green.shade900),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.green.shade900),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.green.shade900),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide:
+                            BorderSide(color: Colors.green.shade900, width: 2),
                       ),
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.8),
+                      fillColor: Colors.white.withOpacity(0.9),
                     ),
+                    style: TextStyle(color: Colors.green.shade900),
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),
@@ -114,28 +145,29 @@ class LoginPage extends StatelessWidget {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
+                      padding: const EdgeInsets.all(16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       backgroundColor: Colors.white,
-                      foregroundColor: Colors.blue.shade900,
+                      foregroundColor: Colors.green.shade900,
+                      textStyle: const TextStyle(fontSize: 18),
                     ),
-                    child: const Text('Login', style: TextStyle(fontSize: 18)),
+                    child: const Text('Login'),
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton.icon(
                     onPressed: () => _signInWithGoogle(context),
                     icon: Image.asset('assets/google_logo.png', height: 24),
-                    label: const Text('Sign in with Google',
-                        style: TextStyle(fontSize: 18)),
+                    label: const Text('Sign in with Google'),
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
+                      padding: const EdgeInsets.all(16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                       backgroundColor: Colors.white,
-                      foregroundColor: Colors.blue.shade900,
+                      foregroundColor: Colors.green.shade900,
+                      textStyle: const TextStyle(fontSize: 18),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -148,7 +180,7 @@ class LoginPage extends StatelessWidget {
                     },
                     child: const Text(
                       'Don\'t have an account? Sign Up',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                   TextButton(
@@ -161,7 +193,7 @@ class LoginPage extends StatelessWidget {
                     },
                     child: const Text(
                       'Forgot Password?',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                 ],
