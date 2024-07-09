@@ -44,6 +44,7 @@ dependencies:
   firebase_ui_auth: ^1.10.0
   google_sign_in: ^6.1.6
   firebase_ui_oauth_google: ^1.2.14
+  cloud_firestore: ^4.14.0
 
 dependency_overrides:
   intl: 0.18.0

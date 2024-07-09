@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: CommunityNetworkingPage(),
+    );
+  }
+}
 
 class CommunityNetworkingPage extends StatefulWidget {
   @override
@@ -10,347 +26,79 @@ class CommunityNetworkingPage extends StatefulWidget {
 }
 
 class _CommunityNetworkingPageState extends State<CommunityNetworkingPage> {
-  List<Post> posts = [
-    Post(
-      title: 'Crop Rotation Tips',
-      content:
-          'Learn about effective crop rotation techniques to improve soil health.',
-      imagePath: 'assets/images/crop_rotation.jpg',
-    ),
-    Post(
-      title: 'Organic Pest Control',
-      content: 'Discover natural methods to control pests in your garden.',
-      imagePath: 'assets/images/organic_pest_control.jpg',
-    ),
-    Post(
-      title: 'Composting Basics',
-      content: 'Start composting to enrich your soil and reduce waste.',
-      imagePath: 'assets/images/composting_basics.jpg',
-    ),
-  ];
+  final TextEditingController _postController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void addPost(Post post) {
-    setState(() {
-      posts.add(post);
-    });
-  }
-
-  void toggleLike(Post post) {
-    setState(() {
-      post.isLiked = !post.isLiked;
-      post.isLiked ? post.likeCount++ : post.likeCount--;
-    });
-  }
-
-  void addComment(Post post, String comment) {
-    setState(() {
-      post.comments.add(comment);
-    });
-  }
-
-  bool _isPostFormVisible = false;
-  bool _isDMVisible = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Farmers Community Network'),
-        backgroundColor: Colors.green[700],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.green[700],
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.article),
-              title: Text('Posts'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Messages'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _isPostFormVisible = !_isPostFormVisible;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                _isPostFormVisible ? Icons.remove : Icons.add,
-                                color: Colors.green[900],
-                              ),
-                              SizedBox(width: 8.0),
-                              Text(
-                                'Share your thoughts',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green[900],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        if (_isPostFormVisible) ...[
-                          SizedBox(height: 16.0),
-                          PostForm(addPost: addPost),
-                        ],
-                        SizedBox(height: 16.0),
-                        Text(
-                          'Community Posts',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green[900],
-                          ),
-                        ),
-                        SizedBox(height: 16.0),
-                        Column(
-                          children: posts.map((post) {
-                            return PostTile(
-                              post: post,
-                              onLike: () => toggleLike(post),
-                              onComment: (comment) => addComment(post, comment),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 1.0,
-            color: Colors.grey[300],
-          ),
-          Expanded(
-            flex: _isDMVisible ? 1 : 0,
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _isDMVisible = !_isDMVisible;
-                    });
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        _isDMVisible
-                            ? Icons.arrow_drop_down
-                            : Icons.arrow_drop_up,
-                        color: Colors.green[900],
-                      ),
-                      SizedBox(width: 8.0),
-                      Text(
-                        'Direct Messages',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green[900],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (_isDMVisible)
-                  Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.all(16.0),
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.green[700],
-                            child: Text('A'),
-                          ),
-                          title: Text('Alice'),
-                          subtitle: Text('How are the crops?'),
-                          onTap: () {
-                            // Implement message navigation
-                          },
-                        ),
-                        ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.green[700],
-                            child: Text('B'),
-                          ),
-                          title: Text('Bob'),
-                          subtitle: Text('Need help with irrigation.'),
-                          onTap: () {
-                            // Implement message navigation
-                          },
-                        ),
-                        // Add more ListTile for other messages
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PostForm extends StatefulWidget {
-  final Function(Post) addPost;
-
-  PostForm({required this.addPost});
-
-  @override
-  _PostFormState createState() => _PostFormState();
-}
-
-class _PostFormState extends State<PostForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _contentController = TextEditingController();
-  File? _imageFile;
-
-  Future<void> _pickImage() async {
-    final status = await Permission.photos.request();
-    if (status.isGranted) {
-      final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      setState(() {
-        if (pickedFile != null) {
-          _imageFile = File(pickedFile.path);
-        }
-      });
-    } else {
-      // Handle permission denied case
-      print("Permission denied");
+  void _createPost() async {
+    if (_postController.text.isNotEmpty) {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(user.uid).get();
+        await _firestore.collection('posts').add({
+          'authorId': user.uid,
+          'authorName': userDoc['name'],
+          'content': _postController.text,
+          'timestamp': FieldValue.serverTimestamp(),
+          'likes': [],
+        });
+        _postController.clear();
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextFormField(
-            controller: _titleController,
-            decoration: InputDecoration(
-              labelText: 'Title',
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.green[700]!),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter a title';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 10.0),
-          TextFormField(
-            controller: _contentController,
-            decoration: InputDecoration(
-              labelText: 'Content',
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.green[700]!),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some content';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 20.0),
-          _imageFile == null
-              ? Text('No image selected.')
-              : Image.file(_imageFile!, height: 200),
-          SizedBox(height: 10.0),
-          ElevatedButton(
-            onPressed: _pickImage,
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green[700],
-            ),
-            child: Text('Select Image'),
-          ),
-          SizedBox(height: 20.0),
-          ElevatedButton(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Community Networking'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.message),
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                final post = Post(
-                  title: _titleController.text,
-                  content: _contentController.text,
-                  imagePath: _imageFile?.path,
-                );
-                widget.addPost(post);
-                _titleController.clear();
-                _contentController.clear();
-                setState(() {
-                  _imageFile = null;
-                });
-              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InboxPage()),
+              );
             },
-            style: ElevatedButton.styleFrom(
-              primary: Colors.green[700],
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _postController,
+              decoration: InputDecoration(
+                labelText: 'Write a post',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _createPost,
+                ),
+              ),
             ),
-            child: Text('Add Post'),
+          ),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore
+                  .collection('posts')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Center(child: CircularProgressIndicator());
+                var posts = snapshot.data!.docs;
+                return ListView.builder(
+                  itemCount: posts.length,
+                  itemBuilder: (context, index) {
+                    var post = posts[index];
+                    return PostWidget(post);
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -358,83 +106,69 @@ class _PostFormState extends State<PostForm> {
   }
 }
 
-class PostTile extends StatelessWidget {
-  final Post post;
-  final VoidCallback onLike;
-  final Function(String) onComment;
+class PostWidget extends StatelessWidget {
+  final DocumentSnapshot post;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  const PostTile({
-    required this.post,
-    required this.onLike,
-    required this.onComment,
-  });
+  PostWidget(this.post);
+
+  void _likePost() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      if (post['likes'].contains(user.uid)) {
+        _firestore.collection('posts').doc(post.id).update({
+          'likes': FieldValue.arrayRemove([user.uid]),
+        });
+      } else {
+        _firestore.collection('posts').doc(post.id).update({
+          'likes': FieldValue.arrayUnion([user.uid]),
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _commentController = TextEditingController();
+    var timestamp = (post['timestamp'] as Timestamp).toDate();
+    var formattedDate = DateFormat.yMMMd().format(timestamp);
+
     return Card(
-      elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
+      margin: EdgeInsets.all(8.0),
       child: Padding(
-        padding: EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              post.title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            Text(post['authorName'],
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(formattedDate),
             SizedBox(height: 8.0),
-            Text(
-              post.content,
-              style: TextStyle(fontSize: 16),
-            ),
-            if (post.imagePath != null) ...[
-              SizedBox(height: 8.0),
-              Image.file(
-                File(post.imagePath!),
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-            ],
+            Text(post['content']),
+            SizedBox(height: 8.0),
             Row(
               children: [
                 IconButton(
-                  icon: Icon(
-                    post.isLiked ? Icons.favorite : Icons.favorite_border,
-                    color: post.isLiked ? Colors.red : null,
-                  ),
-                  onPressed: onLike,
+                  icon: Icon(Icons.thumb_up),
+                  onPressed: _likePost,
+                  color: post['likes'].contains(_auth.currentUser?.uid)
+                      ? Colors.blue
+                      : Colors.grey,
                 ),
-                Text('${post.likeCount}'),
-              ],
-            ),
-            SizedBox(height: 8.0),
-            TextField(
-              controller: _commentController,
-              decoration: InputDecoration(
-                labelText: 'Add a comment...',
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green[700]!),
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.send, color: Colors.green[700]),
+                Text('${post['likes'].length} likes'),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.comment),
                   onPressed: () {
-                    if (_commentController.text.isNotEmpty) {
-                      onComment(_commentController.text);
-                      _commentController.clear();
-                    }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CommentsPage(post.id)),
+                    );
                   },
                 ),
-              ),
+              ],
             ),
-            ...post.comments.map((comment) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4.0),
-                  child: Text(comment),
-                )),
           ],
         ),
       ),
@@ -442,20 +176,212 @@ class PostTile extends StatelessWidget {
   }
 }
 
-class Post {
-  final String title;
-  final String content;
-  final String? imagePath;
-  bool isLiked;
-  int likeCount;
-  List<String> comments;
+class CommentsPage extends StatelessWidget {
+  final String postId;
+  final TextEditingController _commentController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Post({
-    required this.title,
-    required this.content,
-    this.imagePath,
-    this.isLiked = false,
-    this.likeCount = 0,
-    this.comments = const [],
-  });
+  CommentsPage(this.postId);
+
+  void _postComment() async {
+    if (_commentController.text.isNotEmpty) {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(user.uid).get();
+        await _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .add({
+          'authorId': user.uid,
+          'authorName': userDoc['name'],
+          'content': _commentController.text,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        _commentController.clear();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Comments'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore
+                  .collection('posts')
+                  .doc(postId)
+                  .collection('comments')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Center(child: CircularProgressIndicator());
+                var comments = snapshot.data!.docs;
+                return ListView.builder(
+                  itemCount: comments.length,
+                  itemBuilder: (context, index) {
+                    var comment = comments[index];
+                    return ListTile(
+                      title: Text(comment['authorName']),
+                      subtitle: Text(comment['content']),
+                      trailing: Text(DateFormat.yMMMd().format(
+                          (comment['timestamp'] as Timestamp).toDate())),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _commentController,
+              decoration: InputDecoration(
+                labelText: 'Write a comment',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _postComment,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class InboxPage extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Inbox'),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _firestore.collection('users').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
+          var users = snapshot.data!.docs;
+          return ListView.builder(
+            itemCount: users.length,
+            itemBuilder: (context, index) {
+              var user = users[index];
+              return ListTile(
+                title: Text(user['name']),
+                subtitle: Text(user['email']),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatPage(
+                        receiverId: user.id,
+                        receiverName: user['name'],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class ChatPage extends StatefulWidget {
+  final String receiverId;
+  final String receiverName;
+
+  ChatPage({required this.receiverId, required this.receiverName});
+
+  @override
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  final TextEditingController _messageController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _sendMessage() async {
+    if (_messageController.text.isNotEmpty) {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        await _firestore.collection('messages').add({
+          'senderId': user.uid,
+          'receiverId': widget.receiverId,
+          'message': _messageController.text,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+        _messageController.clear();
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Chat with ${widget.receiverName}'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _firestore
+                  .collection('messages')
+                  .where('senderId', isEqualTo: _auth.currentUser?.uid)
+                  .where('receiverId', isEqualTo: widget.receiverId)
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Center(child: CircularProgressIndicator());
+                var messages = snapshot.data!.docs;
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    var message = messages[index];
+                    return ListTile(
+                      title: Text(message['message']),
+                      subtitle: Text(DateFormat('h:mm a')
+                          .format(message['timestamp'].toDate())),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _messageController,
+              decoration: InputDecoration(
+                labelText: 'Write a message',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _sendMessage,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
