@@ -4,6 +4,7 @@ import 'navigation-components/farmeducation.dart';
 import 'navigation-components/marketplace.dart';
 import 'navigation-components/community-networking.dart';
 import 'navigation-components/farm-management.dart';
+import 'navigation-components/user-details.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
 
   static List<Widget> _pages = <Widget>[
-    UserAuthPage(),
+    UserDetailsPage(),
     FarmManagementPage(),
     EducationalContentPage(),
     MarketplacePage(),
