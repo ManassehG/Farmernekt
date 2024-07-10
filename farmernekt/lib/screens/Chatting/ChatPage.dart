@@ -10,45 +10,45 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   List<ChatUsers> chatUsers = [
     ChatUsers(
-        name: "Jane Russel",
-        messageText: "Awesome Setup",
+        name: "John Mwangi",
+        messageText: "I actually saw the plants are healthy",
         imageURL: "assets/images/userImage1.jpg",
         time: "Now"),
     ChatUsers(
-        name: "Glady's Murphy",
+        name: "Glady's Njoki",
         messageText: "That's Great",
         imageURL: "assets/images/userImage2.jpg",
         time: "Yesterday"),
     ChatUsers(
-        name: "Jorge Henry",
-        messageText: "Hey where are you?",
+        name: "Nick Waweru",
+        messageText: "Hey how much is a kg of onions?",
         imageURL: "assets/images/userImage3.jpg",
-        time: "31 Mar"),
+        time: "31 June"),
     ChatUsers(
-        name: "Philip Fox",
-        messageText: "Busy! Call me in 20 mins",
+        name: "Joel Kanyi",
+        messageText: "My chickens are now 8 months old",
         imageURL: "assets/images/userImage4.jpg",
-        time: "28 Mar"),
+        time: "28 June"),
     ChatUsers(
-        name: "Debra Hawkins",
+        name: "Mwangi Agriculture",
         messageText: "Thankyou, It's awesome",
         imageURL: "assets/images/userImage5.jpg",
-        time: "23 Mar"),
+        time: "23 June"),
     ChatUsers(
-        name: "Jacob Pena",
-        messageText: "will update you in evening",
+        name: "Nancy Okayo",
+        messageText: "Will update you in evening",
         imageURL: "assets/images/userImage6.jpg",
-        time: "17 Mar"),
+        time: "17 June"),
     ChatUsers(
-        name: "Andrey Jones",
-        messageText: "Can you please share the file?",
+        name: "Mwangi wa Pigs",
+        messageText: "Nitumie ile formula ya kufeed nguruwe",
         imageURL: "assets/images/userImage7.jpg",
-        time: "24 Feb"),
+        time: "24 May"),
     ChatUsers(
-        name: "John Wick",
+        name: "John Mwasondo",
         messageText: "How are you?",
         imageURL: "assets/images/userImage8.jpg",
-        time: "18 Feb"),
+        time: "18 May"),
   ];
 
   @override

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MarketplacePage extends StatefulWidget {
   @override
@@ -23,7 +26,6 @@ class _MarketplacePageState extends State<MarketplacePage> {
       price: 7.0,
       imagePath: 'assets/images/duckeggs.jpg',
     ),
-    // Add more products here
     Product(
       productName: 'Fresh Milk',
       description: 'Pure fresh milk from grass-fed cows.',
@@ -319,15 +321,22 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
                 SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate() &&
                         _imageFile != null) {
+                      // Upload image to Firebase Storage
+                      final imageUrl = await uploadImageToFirebase(_imageFile!);
+
                       final product = Product(
                         productName: _productNameController.text,
                         description: _descriptionController.text,
                         price: double.parse(_priceController.text),
-                        imagePath: _imageFile!.path,
+                        imagePath: imageUrl,
                       );
+
+                      // Add product to Firestore
+                      await addProductToFirestore(product);
+
                       widget.addProduct(product);
                       Navigator.pop(context);
                     }
@@ -340,6 +349,37 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
       ),
     );
+  }
+
+  Future<String> uploadImageToFirebase(File imageFile) async {
+    try {
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('product_images')
+          .child('${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+      firebase_storage.UploadTask uploadTask = ref.putFile(imageFile);
+      await uploadTask.whenComplete(() => null);
+
+      String imageUrl = await ref.getDownloadURL();
+      return imageUrl;
+    } catch (e) {
+      print("Error uploading image to Firebase Storage: $e");
+      return '';
+    }
+  }
+
+  Future<void> addProductToFirestore(Product product) async {
+    try {
+      await FirebaseFirestore.instance.collection('products').add({
+        'productName': product.productName,
+        'description': product.description,
+        'price': product.price,
+        'imagePath': product.imagePath,
+      });
+    } catch (e) {
+      print("Error adding product to Firestore: $e");
+    }
   }
 }
 
@@ -440,7 +480,7 @@ class ProductTile extends StatelessWidget {
                 topLeft: Radius.circular(12.0),
                 bottomLeft: Radius.circular(12.0),
               ),
-              child: Image.asset(
+              child: Image.network(
                 imageUrl,
                 width: 120,
                 height: 120,
