@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:farmernekt/screens/Chatting/ChatPage.dart';
 
-class HomePage extends StatelessWidget {
+class ChatHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

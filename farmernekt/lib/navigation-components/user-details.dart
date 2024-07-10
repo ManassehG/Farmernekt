@@ -8,8 +8,7 @@ class UserDetailsPage extends StatelessWidget {
   void _logout(BuildContext context) async {
     await _auth.signOut();
     await GoogleSignIn().signOut();
-    Navigator.of(context)
-        .pushReplacementNamed('/login'); // Adjust this to your login route
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
@@ -39,8 +38,21 @@ class UserDetailsPage extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              'Country: ${user?.email ?? 'Kenya'}', // Replace with actual country data
+              'Email: ${user?.email ?? 'No email provided'}',
               style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Country: Kenya', // Hardcoded for demonstration
+              style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Account Balance: \$1,200.00', // Placeholder for demonstration
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green.shade700),
             ),
             SizedBox(height: 32),
             ElevatedButton(

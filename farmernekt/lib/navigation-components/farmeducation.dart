@@ -195,23 +195,32 @@ Maximizing Egg Production:
     return Scaffold(
       appBar: AppBar(
         title: Text('Educational Content'),
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.green.shade700,
       ),
       body: Container(
-        color: Colors.green,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green.shade400, Colors.green.shade900],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               Container(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white.withOpacity(0.9),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: DropdownButton<String>(
+                  isExpanded: true,
                   borderRadius: BorderRadius.circular(10),
                   value: _selectedFilter,
                   elevation: 5,
+                  underline: SizedBox(),
                   items: <String>['All', 'Crop-related', 'Livestock-related']
                       .map((String value) {
                     return DropdownMenuItem<String>(
@@ -222,6 +231,7 @@ Maximizing Egg Production:
                   onChanged: _filterTopics,
                 ),
               ),
+              SizedBox(height: 16),
               Expanded(
                 child: ListView.builder(
                   itemCount: _filteredTopics.length,
@@ -246,6 +256,7 @@ Maximizing Egg Production:
       elevation: 5,
       margin: EdgeInsets.symmetric(vertical: 10),
       child: ListTile(
+        contentPadding: EdgeInsets.all(16.0),
         title: Text(
           topic.title,
           style: TextStyle(
@@ -253,9 +264,12 @@ Maximizing Egg Production:
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text(
-          topic.description,
-          style: TextStyle(color: Colors.black54),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            topic.description,
+            style: TextStyle(color: Colors.black54),
+          ),
         ),
         onTap: () {
           Navigator.push(
@@ -280,6 +294,7 @@ class EducationalDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(topic.title),
+        backgroundColor: Colors.green.shade700,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -292,6 +307,7 @@ class EducationalDetailPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Colors.green.shade900,
                 ),
               ),
               SizedBox(height: 10),

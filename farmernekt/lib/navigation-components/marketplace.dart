@@ -18,10 +18,59 @@ class _MarketplacePageState extends State<MarketplacePage> {
       imagePath: 'assets/images/vegetables.jpg',
     ),
     Product(
-      productName: 'Free-range Eggs',
-      description: 'Farm-fresh free-range eggs.',
-      price: 5.0,
-      imagePath: 'assets/images/vegetables.jpg',
+      productName: 'Duck Eggs',
+      description: 'Farm-fresh free-range duck eggs.',
+      price: 7.0,
+      imagePath: 'assets/images/duckeggs.jpg',
+    ),
+    // Add more products here
+    Product(
+      productName: 'Fresh Milk',
+      description: 'Pure fresh milk from grass-fed cows.',
+      price: 8.0,
+      imagePath: 'assets/images/milk.jpg',
+    ),
+    Product(
+      productName: 'Organic Apples',
+      description: 'Crisp and juicy organic apples.',
+      price: 3.0,
+      imagePath: 'assets/images/apples.jpg',
+    ),
+    Product(
+      productName: 'Handcrafted Honey',
+      description: 'Locally sourced handcrafted honey.',
+      price: 12.0,
+      imagePath: 'assets/images/honey.jpg',
+    ),
+    Product(
+      productName: 'Organic Spinach',
+      description: 'Nutritious organic spinach leaves.',
+      price: 6.0,
+      imagePath: 'assets/images/spinach.jpg',
+    ),
+    Product(
+      productName: 'Fresh Chicken Eggs',
+      description: 'Farm-fresh chicken eggs.',
+      price: 4.0,
+      imagePath: 'assets/images/eggs.jpg',
+    ),
+    Product(
+      productName: 'Organic Honeydew Melon',
+      description: 'Sweet and refreshing honeydew melon.',
+      price: 9.0,
+      imagePath: 'assets/images/melon.jpg',
+    ),
+    Product(
+      productName: 'Onions',
+      description: 'Fresh onions harvested from local farms.',
+      price: 3.0,
+      imagePath: 'assets/images/onions.jpg',
+    ),
+    Product(
+      productName: 'Pumpkin',
+      description: 'Sweet and nutritious pumpkins.',
+      price: 6.0,
+      imagePath: 'assets/images/pumpkin.jpg',
     ),
   ];
 

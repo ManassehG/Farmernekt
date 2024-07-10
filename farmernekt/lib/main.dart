@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart'; // Add this import for Fireba
 import 'bottom_nav.dart';
 import 'package:farmernekt/screens/login_screen.dart';
 import 'firebase_options.dart';
+import 'navigation-components/user-details.dart';
 
 void main() async {
   WidgetsFlutterBinding
@@ -29,6 +30,10 @@ class MyApp extends StatelessWidget {
 
       debugShowCheckedModeBanner: false, // Remove debug banner
       home: AuthWrapper(),
+      routes: {
+        '/login': (context) => LoginPage(),
+        '/userdetails': (context) => UserDetailsPage(),
+      },
     );
   }
 }

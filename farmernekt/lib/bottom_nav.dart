@@ -5,6 +5,7 @@ import 'navigation-components/marketplace.dart';
 import 'navigation-components/community-networking.dart';
 import 'navigation-components/farm-management.dart';
 import 'navigation-components/user-details.dart';
+import 'screens/Chatting/chatHomeScreen.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _BottomNavState extends State<BottomNav> {
     FarmManagementPage(),
     EducationalContentPage(),
     MarketplacePage(),
-    CommunityNetworkingPage(),
+    ChatHomePage(),
   ];
 
   void _onItemTapped(int index) {
