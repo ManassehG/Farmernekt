@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'navigation-components/farmeducation.dart';
-import 'navigation-components/marketplace.dart';
+import 'navigation-components/marketplacy.dart';
 import 'navigation-components/community-networking.dart';
 import 'navigation-components/farm-management.dart';
 import 'navigation-components/user-details.dart';
